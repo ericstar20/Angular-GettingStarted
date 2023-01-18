@@ -12,7 +12,8 @@ export class ProductListComponent implements OnInit{
     imageWidth: number = 50;
     imageMargin: number = 2;
     showImage: boolean = false;
-    
+    filteredProducts: IProduct[] = []
+
     private _listFilter: string = '';
     get listFilter(): string {
       return this._listFilter;
@@ -23,8 +24,6 @@ export class ProductListComponent implements OnInit{
       this.filteredProducts =  this.performFilter(value);
     }
 
-    filteredProducts: IProduct[] = []
-
     products: IProduct[] =  [
        {
         "productId": 1,
@@ -33,7 +32,7 @@ export class ProductListComponent implements OnInit{
         "releaseDate": "March 19, 2021",
         "description": "Leaf rake with 48-inch wooden handle.",
         "price": 19.95,
-        "starRating": 3.2,
+        "starRating": 2.2,
         "imageUrl": "assets/images/leaf_rake.png"
       },
       {
@@ -61,5 +60,9 @@ export class ProductListComponent implements OnInit{
 
     ngOnInit(): void {
       this.listFilter = 'Cart';
+    }
+
+    onRatingClicked(message: string): void {
+      this.pageTitle = "Product List: " + message
     }
 }
