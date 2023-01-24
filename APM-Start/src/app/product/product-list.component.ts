@@ -4,7 +4,6 @@ import { IProduct } from "./product";
 import { ProductService } from "./product.service";
 
 @Component({
-  selector: 'pm-products',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
@@ -17,40 +16,37 @@ export class ProductListComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
   sub!: Subscription;
 
-  filteredProducts: IProduct[] = []
-
   private _listFilter: string = '';
   get listFilter(): string {
     return this._listFilter;
   }
   set listFilter(value: string) {
-    this._listFilter = value
-    console.log('Setter: ', this._listFilter)
+    this._listFilter = value;
+    //console.log('Setter: ', this._listFilter)
     this.filteredProducts = this.performFilter(value);
   }
 
+  filteredProducts: IProduct[] = [];
   products: IProduct[] = [];
 
-  constructor(private productService: ProductService) { };
+  constructor(private productService: ProductService) {};
 
   performFilter(filterBy: string): IProduct[] {
     filterBy = filterBy.toLocaleLowerCase();
     return this.products.filter((product: IProduct) =>
-      product.productName.toLocaleLowerCase().includes(filterBy))
-
+      product.productName.toLocaleLowerCase().includes(filterBy));
   }
 
-  toggleImage() {
+  toggleImage(): void {
     this.showImage = !this.showImage;
   }
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe({
+    this.sub = this.productService.getProducts().subscribe({
       next: products => {
-        this.products = products
+        this.products = products;
         this.filteredProducts = this.products;
       },
-
       error: err => this.errorMessage = err
     });
   }
@@ -60,6 +56,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   onRatingClicked(message: string): void {
-    this.pageTitle = "Product List: " + message
+    this.pageTitle = 'Product List: ' + message
   }
 }
